@@ -3960,6 +3960,15 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     Login and Registration Page - Transparent Background Style
 ------------------------------------------------------------------*/
 
+
+.pLogin{
+    margin: 10px 0;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    color: #B9BBBC;
+	font-size:44px;
+}
+
 .loginpage {
     padding: 0 50px;
 }
@@ -4094,10 +4103,7 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     margin: 5px 5px 5px 5px;
 }
 body.login_page {
-    background-color: rgba(116, 77, 144, 1.0)
-    /*#744d90*/
-    
-    ;
+    background-color: black;
     background-image: url('../images/login-bg.png');
     background-attachment: fixed;
     height: 100%;
@@ -4106,6 +4112,8 @@ body.login_page {
     overflow: hidden;
     width: 100%;
 }
+
+
 .register-wrapper {
     height: 100%;
     overflow: auto;
