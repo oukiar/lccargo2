@@ -1,8 +1,5 @@
 <div id="repack_content">
-<fieldset class="container">
-    <div ng-controller="MyController" class="my-controller">
-        <div class="pull-right">
-        </div>
+
         
         <div class="row">
             <div class="col-lg-12 col-md-12 container">
@@ -12,8 +9,10 @@
                     <div class="col-md-6 col-xs-6" style="margin-top:10px;">
                     
                     <form class="pure-form" align="right">
-                        <label for="filterby" class="pfont">By:</label>
-                        <select  id="filterby" name="filterby">
+						<table>
+						<tr>
+                     	<td style="padding:0 .8px 0 .8px;"><label for="filterby" class="pfont">By:</label></td>
+                        <td style="padding:0 .8px 0 .8px;"><select  id="filterby" name="filterby">
                             <!--IF ALL SHOW DATE SELECT OPTIONS-->
                             <option value="All">All</option>
                             <!--IF SHIPPER SHOW DATE SELECT OPTIONS AND INPUT TO SPECIFY SHIPPER-->
@@ -28,14 +27,15 @@
                             <option value="Country">Country</option>
                             <option value="Warehouse">WareHouse</option>
                             <option value="volume">Volume</option>
-                            </select>
+                            </select></td>
                            
                             <!-- IF ALL OR DATE SELECTED THIS SEARCH INPUT IS NOT USE-->
-                            <input type="hidden" placeholder="Search"  id="searchtext" name="searchtext">
+							<td style="padding:0 .8px 0 .8px;"><label class="pfont"  style="display: none;" id="fromTxt">From:</label></td>
+                            <td style="padding:0 .8px 0 .8px;"><input type="hidden" placeholder="Search"  id="searchtext" name="searchtext"></td>
                             
 				   
-                            <label class="pfont">Date:</label>
-                            <select id="filterdate" name="filterdate">
+                           <td style="padding:0 .8px 0 .8px;"><label class="pfont" id="toTxt">Date:</label></td>
+                           <td style="padding:0 .8px 0 .8px;"> <select id="filterdate" name="filterdate">
                                 <option value="All">All</option>
                                 <option value="Today">Today</option>
                                 <option value="Yesterday">Yesterday</option>
@@ -43,10 +43,11 @@
                                 <option value="This month">This month</option>
                                 <option value="Last month">Last month</option>	
                                 <option value="Current year">Current Year</option>
-                            </select>			   
+                            </select></td>		   
 		  	        
-                            <input type='button' value='Apply'>
-                    
+                           <td style="padding:0 .8px 0 .8px;"> <input type='button' value='Apply'></td>
+                    </tr>
+					</table>
                         </form>
                         </div>
                     </div>
@@ -72,7 +73,7 @@
                     
                         
 					<% results.forEach(function(label){%>
-                        <tr dir-paginate="product in product | filter:q |" current-page="currentPage">
+                        <tr>
                             <td align="center"><input id="<%=label['Receipt']%>" name="checkware" type="checkbox"></td>
                             <td align="center"><%= label["Receipt"]%></td>
                             <td><%= label["Shipper"]%></td>
@@ -90,23 +91,15 @@
                         
                     </div>
                 </div>
-                
-                <div class="col-md-4 page_s">
-                    <h3>{{showing}} : {{ currentPage }}</h3>
-                </div>
-                
+                   
             </div>
-            <div ng-controller="OtherController" class="other-controller pull-right">
-                <div class="text-center">
-                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="ang_table/js/dirPagination.tpl.html"></dir-pagination-controls>
-                </div>
-            </div>
+           
         </div>
-    </div>
+ 
         
         
     </form>
-</fieldset>
+
 </div>
 
 <script>
@@ -116,7 +109,8 @@
 	  		if($("#filterby").val() == "Date")
 	  		{
 	  			$("#searchtext").replaceWith("<input type='text'  placeholder='From' id='searchtext' name='searchtext'>");
-            
+				$("#fromTxt").replaceWith("<label class='pfont' style='display: block;' id='fromTxt'>Date:</label>")
+                $("#toTxt").replaceWith("<label class='pfont' id='toTxt'>To:</label>")
 	              $("#filterdate").replaceWith("<input type='text'  placeholder='To' id='filterdate' name='filterdate'>");
             
                 $( "#searchtext" ).datepicker();
