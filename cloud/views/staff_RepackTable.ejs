@@ -45,7 +45,7 @@
                                 <option value="Current year">Current Year</option>
                             </select></td>		   
 		  	        
-                           <td style="padding:0 .8px 0 .8px;"> <input type='button' value='Apply'></td>
+                           <td style="padding:0 .8px 0 .8px;"> </td>
                     </tr>
 					</table>
                         </form>
@@ -77,169 +77,7 @@
 </div>
 
 <script>
-                
-    function date_condition()
-    {
-        if($("#filterdate").val() == "Today")
-        {
-            var now = new Date();
-            now.setHours(0,0,0,0);
-            
-            nowbegin = new Date(now.getTime()  );
-            nowbegin.setHours(0,0,0,0);
-            
-            var time = (24 * 3600 * 1000)-1000;
-            var nowend = new Date(now.getTime() + (time) );
-            nowend.setHours(0,0,0,0);
-                    
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        else if($("#filterdate").val() == "Yesterday")
-        {
-            var now = new Date();
-            now.setHours(0,0,0);
-            
-            var difftime = (24 * 3600 * 1000); // one day
-            
-            nowbegin = new Date(now.getTime() - difftime - (1000) );
-            
-            var time = (24 * 3600 * 1000)-1000;
-            var nowend = new Date(now.getTime() - difftime + (time) );
-            
-            
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        else if($("#filterdate").val() == "This week")
-        {
-            
-            var now = new Date();
-            now.setHours(0,0,0);
-            
-            //dia de la semana
-            var nday = now.getDay()+1;  //index zero based
-            
-            var difftime = nday * (24 * 3600 * 1000); // number of day to substract to current date
-            
-            nowbegin = new Date(now.getTime() - difftime - (1000) );
-            
-            var time = (24 * 3600 * 1000)-1000;
-            var nowend = new Date(now.getTime() + (time) );
-            
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        else if($("#filterdate").val() == "This month")
-        {
-            
-            var now = new Date();
-            now.setHours(0,0,0);
-            
-            //dia del mes
-            var nday = now.getDate()-1;
-            
-            var difftime = nday * (24 * 3600 * 1000); // number of day to substract to current date
-            
-            nowbegin = new Date(now.getTime() - difftime - (1000) );
-            
-            var time = (24 * 3600 * 1000)-1000;
-            var nowend = new Date(now.getTime() + (time) );
-            
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        else if($("#filterdate").val() == "Last month")
-        {
-            
-            var now = new Date();
-            now.setHours(0,0,0);
-            now.setDate(0);
-            
-            //mes del anio
-            //var n = now.getMonth()-1;
-            
-            nowbegin = new Date(now.getTime() - (1000) );
-            nowbegin.setMonth(now.getMonth()-1 );
-            
-            var time = (24 * 3600 * 1000)-1000;
-            var nowend = new Date(now.getTime() + (time) );
-            
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        else if($("#filterdate").val() == "Current year")
-        {
-            var now = new Date();
-            now.setHours(0,0,0);
-            
-            nowbegin = new Date(now.getTime() - (1000) );
-            nowbegin.setDate( 1 );
-            nowbegin.setMonth(0);
-            
-            var nowend = new Date(now.getTime() );
-            nowend.setHours(23,59,59);
-            
-            return {
-                    greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowbegin}},
-                    lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:nowend}}
-                    };
-        }
-        
-        return {};
-    }
-    
-    function filter_conditions()
-    {
-        //DATE INTERVAL
-        if($("#filterby").val() == "Date")
-        {
-            var begindate = new Date(req.body.searchtext);
-            var enddate = new Date(req.body.filterdate);
-            
-            return {
-                    greaterThan: {'ReceiptDate' : {__type:"Date", iso:begindate}},
-                    lessThan: {'ReceiptDate' : {__type:"Date", iso:enddate}}
-                    };
-        }
-        else
-        { 
-            return date_condition();
-        }    
-    }
-    
-    function filter_like()
-    {
-        var msg = $("#searchtext").val();
-        var filter = $("#filterby").val();
-        
-        
-        if($("#filterby").val() == "Transport"  || $("#filterby").val() == "Country" || $("#filterby").val() == "Warehouse" || $("#filterby").val() == "Invoice")
-        {
-            var dic = {};
-            dic[$("#filterby").val()] = msg;
-            return dic;
-        }
-        else if($("#filterby").val() == "Shipper")
-        {
-            return {"Shipper":{"Name":msg}};
-        }
-        else if($("#filterby").val() == "Consignee")
-        {
-            return {"Consignee":{"Name":msg}};
-        }
-        
-    }
+          
     
         
         function searchtext_keyup()
@@ -276,9 +114,8 @@
             
         }
         
-        
-	  	$("#filterdate").change(function(){
             
+        $("#filterdate").change(function(){
             
             
             InsertTable({
@@ -316,12 +153,45 @@
 	  		if($("#filterby").val() == "Date")
 	  		{
 	  			$("#searchtext").replaceWith("<input type='text'  placeholder='From' id='searchtext' name='searchtext'>");
-				$("#fromTxt").replaceWith("<label class='pfont' style='display: block;' id='fromTxt'>Date:</label>")
-                $("#toTxt").replaceWith("<label class='pfont' id='toTxt'>To:</label>")
+				$("#fromTxt").replaceWith("<label class='pfont' style='display: block;' id='fromTxt'>Date:</label>");
+                $("#toTxt").replaceWith("<label class='pfont' id='toTxt'>To:</label>");
                 $("#filterdate").replaceWith("<input type='text'  placeholder='To' id='filterdate' name='filterdate'>");
             
                 $( "#searchtext" ).datepicker();
-                $( "#filterdate" ).datepicker();
+                $( "#filterdate" ).datepicker(
+                    {
+                        onSelect: 
+                            function(dateText, inst) 
+                            {
+                            
+                                InsertTable({
+                                    cols:   /*Columnas definidas FIELD:TITLE or FIELD:{FIELDNEEDED:FIELDTITLE}*/
+                                         {
+                                            
+                                            "Receipt":"",
+                                            "Shipper":{"Name":""}, /*This is the sintax for return fields of pointers showed on table*/
+                                            "ReceiptDate":"",
+                                            "Country":"",
+                                            "Volume":"",
+                                            "Warehouse":"",
+                                            "Invoice":"",
+                                            "Transport":""
+                                        },
+                                        
+                                    /* AL PASAR EL PARAMETRO COLLECTION INDICAMOS QUE NECESITAMOS BUSQUEDA CON LISTA DE RESULTADOS */
+                                    collection: "Warehouses", /* COLLECCION PRINCIPAL */
+                                    by: "Consignee",    /* CAMPO DE BUSQUEDA */
+                                    value: {__type: "Pointer", className: "Clients", objectId: usrID},
+                                    
+                                    /* CONDICIONES */
+                                    conditions: filter_conditions(),
+                                    
+                                    document: "staff_RepackDynamicTable",
+                                    itemid: "repack_table"
+                                });
+                            }
+                        });
+                        
 	  		}
 	          else if($("#filterby").val() == "volume")
 	  		{
