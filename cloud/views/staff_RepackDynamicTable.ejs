@@ -14,7 +14,7 @@
 
         <% results.forEach(function(label){%>
             <tr>
-                <td align="center"><input id="<%=label['Receipt']%>" name="checkware" type="checkbox"></td>
+                <td align="center"><input id="<%=label['objectId']%>" name="checkware" type="checkbox"></td>
                 <td align="center"><%= label["Receipt"]%></td>
                 <td><%= label["Shipper"]%></td>
                 <td><%= label["ReceiptDate"]%></td>
