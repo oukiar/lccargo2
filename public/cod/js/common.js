@@ -34,6 +34,18 @@ function SaveForm(kwargs)
     );      
 }
 
+function GetRendered(kwargs)
+{
+    /*REQUEST DATA FROM THE SERVER*/
+    $.post("/getrenderedby", 
+        kwargs, 
+        function(data)
+        {
+            $("#" + kwargs["itemid"]).replaceWith(data);
+        }
+    );      
+}
+
       
 function date_condition()
 {
