@@ -47,9 +47,11 @@ function GetRendered(kwargs)
 }
 
       
-function date_condition()
+function date_condition(filterdate)
 {
-    if($("#filterdate").val() == "Today")
+    if(typeof filterdate == "undefined") filterdate = "filterdate";
+    
+    if($("#"+filterdate).val() == "Today")
     {
         var nowbegin = new Date();
         var nowend = new Date();
@@ -59,7 +61,7 @@ function date_condition()
                 lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( nowend ).format("MM[/]DD[/]YYYY")}}
                 };
     }
-    else if($("#filterdate").val() == "Yesterday")
+    else if($("#"+filterdate).val() == "Yesterday")
     {
         var yesterday = new Date();
         yesterday.setDate(yesterday.getDate()-1);
@@ -69,7 +71,7 @@ function date_condition()
                 lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( yesterday ).format("MM[/]DD[/]YYYY")}}
                 };
     }
-    else if($("#filterdate").val() == "This week")
+    else if($("#"+filterdate).val() == "This week")
     {
         
         var now = new Date();
@@ -90,7 +92,7 @@ function date_condition()
                 lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( nowend ).format("MM[/]DD[/]YYYY")}}
                 };
     }
-    else if($("#filterdate").val() == "This month")
+    else if($("#"+filterdate).val() == "This month")
     {
         nowbegin = new Date();
         nowbegin.setDate(1);
@@ -102,7 +104,7 @@ function date_condition()
                 lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( nowend ).format("MM[/]DD[/]YYYY")}}
                 };
     }
-    else if($("#filterdate").val() == "Last month")
+    else if($("#"+filterdate).val() == "Last month")
     {
         var nowend = new Date();
         nowend.setDate(0);
@@ -117,7 +119,7 @@ function date_condition()
                 lessThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( nowend ).format("MM[/]DD[/]YYYY")}}
                 };
     }
-    else if($("#filterdate").val() == "Current year")
+    else if($("#"+filterdate).val() == "Current year")
     {
         var now = new Date();
         now.setHours(0,0,0);
@@ -138,13 +140,17 @@ function date_condition()
     return {};
 }
 
-function filter_conditions()
+function filter_conditions(filterby, searchtext, filterdate)
 {
+    if(typeof filterby == "undefined") filterby = "filterby";
+    if(typeof searchtext == "undefined") searchtext = "searchtext";
+    if(typeof filterdate == "undefined") filterdate = "filterdate";
+    
     //DATE INTERVAL
-    if($("#filterby").val() == "Date")
+    if($("#"+filterby).val() == "Date")
     {
-        var begindate = new Date($("#searchtext").val());
-        var enddate = new Date($("#filterdate").val());
+        var begindate = new Date($("#"+searchtext).val());
+        var enddate = new Date($("#"+filterdate).val());
         
         return {
                 greaterThanOrEqualTo: {'ReceiptDate' : {__type:"Date", iso:moment( begindate ).format("MM[/]DD[/]YYYY")}},
@@ -153,28 +159,84 @@ function filter_conditions()
     }
     else
     { 
-        return date_condition();
+        return date_condition(filterdate);
     }    
 }
 
-function filter_like()
+function filter_like(filterby, searchtext)
 {
-    var filter = $("#filterby").val();
+    if(typeof filterby == "undefined") filterby = "filterby";
+    if(typeof searchtext == "undefined") searchtext = "searchtext";
     
-    if($("#filterby").val() == "Shipper" || $("#filterby").val() == "Consignee")
+    if($("#"+filterby).val() == "Shipper" || $("#"+filterby).val() == "Consignee")
     {
         var dic = {};
-        dic[$("#filterby").val()] = {"Name":$("#searchtext").val()};
+        dic[$("#"+filterby).val()] = {"Name":$("#"+searchtext).val()};
         return dic;
+    }
+    else if($("#"+filterby).val() == "Date")
+    {
+        return {};
     }
     else
     {
         var dic = {};
-        dic[$("#filterby").val()] = $("#searchtext").val();
+        dic[$("#"+filterby).val()] = $("#"+searchtext).val();
         return dic;
     }
     
     
+}
+	
+function filterby_changed(filterby, searchtext, filterdate, updatetable, searchkeyup)
+{
+    if(typeof filterby == "undefined") filterby = "filterby";
+    if(typeof searchtext == "undefined") searchtext = "searchtext";
+    if(typeof filterdate == "undefined") filterdate = "filterdate";
+    if(typeof updatetable == "undefined") updatetable = update_table;
+    if(typeof searchkeyup == "undefined") searchkeyup = searchtext_keyup;
+    
+    if($("#"+filterby).val() == "Date" )
+    {
+        $("#"+searchtext).replaceWith("<input type='text'  placeholder='From' id='searchtext' name='searchtext'>".replace(/searchtext/g, searchtext));
+        /*$("#fromTxt").replaceWith("<label class='pfont' style='display: block;' id='fromTxt'>Date:</label>");
+        $("#toTxt").replaceWith("<label class='pfont' id='toTxt'>To:</label>");*/
+        $("#"+filterdate).replaceWith("<input type='text'  placeholder='To' id='filterdate' name='filterdate'>".replace(/filterdate/g, filterdate));
+    
+        $( "#"+searchtext ).datepicker();
+        $( "#"+filterdate ).datepicker(
+            {
+                onSelect: 
+                    function(dateText, inst) 
+                    {            
+                        updatetable();
+                    }
+                });
+                
+    }
+    else if($("#"+filterby).val() == "All")
+    {
+        $("#"+searchtext).replaceWith("<input type='hidden' placeholder='Search' id='searchtext' name='searchtext'>".replace(/searchtext/g, searchtext));
+        $("#"+filterdate).replaceWith("<select id='filterdate' name='filterdate'><option value='All'>All</option><option value='Today'>Today</option> <option value='Yestarday'>Yesterday</option><option value='This week'>This week</option><option value='This month'>This month</option><option value='Last month'>Last month</option><option value='Current year'>Current Year</option></select>".replace(/filterdate/g, filterdate));
+            
+        $("#"+filterdate).change(function(){
+                updatetable();
+            }); 
+              
+        updatetable();
+        
+    }
+    else
+    {
+        $("#"+searchtext).replaceWith("<input type='text' placeholder='Search' id='searchtext' name='searchtext'>".replace(/searchtext/g, searchtext));
+        $("#"+filterdate).replaceWith("<select id='filterdate' name='filterdate'><option value='All'>All</option><option value='Today'>Today</option> <option value='Yestarday'>Yesterday</option><option value='This week'>This week</option><option value='This month'>This month</option><option value='Last month'>Last month</option><option value='Current year'>Current Year</option></select>".replace(/filterdate/g, filterdate));
+        
+        $("#"+searchtext).keyup(searchkeyup);
+        
+        $("#"+filterdate).change(function(){
+                updatetable();
+            }); 
+    }
 }
 
 
