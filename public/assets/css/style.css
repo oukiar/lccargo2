@@ -7424,7 +7424,7 @@ background-image:linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1))
 	
 	
   .modalDialog {
-  	position: fixed;
+  	position: absolute;
   	font-family: Arial, Helvetica, sans-serif;
   	top: 0;
   	right: 0;
@@ -7445,7 +7445,7 @@ background-image:linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1))
   }
 
   .modalDialog > div {
-  	width: 400px;
+  	width: 950px;
   	position: relative;
   	margin: 10% auto;
   	padding: 5px 20px 13px 20px;

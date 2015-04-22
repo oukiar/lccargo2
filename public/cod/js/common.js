@@ -10,6 +10,7 @@ function InsertForm(kwargs)
     );      
 }
 
+
 function InsertTable(kwargs)
 {
     /*REQUEST DATA FROM THE SERVER*/
